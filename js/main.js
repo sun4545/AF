@@ -430,20 +430,27 @@ function initBenefitSection() {
                         // sticky가 방금 시작되었을 때 (relativeScroll이 0 이하)
                         // 첫 번째 항목 유지
                         adjustedProgress = 0;
-                    } else if (relativeScroll <= scrollRange * 0.5) {
-                        // sticky 진입 후 0~50% 구간: 첫 번째 항목 유지
-                        // 스크롤업 시 첫 번째 항목을 더 오래 볼 수 있도록 구간 확장
+                    } else if (relativeScroll <= scrollRange * 0.33) {
+                        // sticky 진입 후 0~33% 구간: 첫 번째 항목 유지
                         adjustedProgress = 0;
-                    } else if (relativeScroll <= scrollRange * 0.75) {
-                        // 50~75% 구간: 두 번째 항목
+                    } else if (relativeScroll <= scrollRange * 0.66) {
+                        // 33~66% 구간: 두 번째 항목
                         adjustedProgress = 0.5;
                     } else {
-                        // 75~100% 구간: 세 번째 항목
+                        // 66~100% 구간: 세 번째 항목
                         adjustedProgress = 1;
                     }
                     
                     // 진행률에 따라 활성 항목 결정
-                    let newIndex = Math.floor(adjustedProgress * (items.length - 1));
+                    // adjustedProgress를 0, 0.5, 1로 매핑하여 0, 1, 2 인덱스로 변환
+                    let newIndex;
+                    if (adjustedProgress <= 0) {
+                        newIndex = 0; // 첫 번째 항목
+                    } else if (adjustedProgress <= 0.5) {
+                        newIndex = 1; // 두 번째 항목
+                    } else {
+                        newIndex = 2; // 세 번째 항목
+                    }
                     newIndex = Math.min(newIndex, items.length - 1);
                     
                     // 활성 항목 변경
